@@ -20,4 +20,23 @@ public with sharing class AccountTriggerHandler {
                 acc.BillingCountry = acc.ShippingCountry;
             }
     }
+
+    public static void setAccountRating(List<Account> accounts) {
+        for(Account newAccount : accounts) {
+            if(String.isNotBlank(newAccount.Phone) && String.isNotBlank(newAccount.Website) && String.isNotBlank(newAccount.Fax))
+                newAccount.Rating = 'Hot';
+            } 
+    }
+
+    public static void createContactRelatedToAccount(List<Account> accounts) {
+        List<Contact> contactsToInsert = new List<Contact>();
+        for(Account newAccount : accounts) {
+            Contact newContact = new Contact();
+            newContact.LastName = 'DefaultContact';
+            newContact.Email = 'default@email.com';
+            newContact.AccountId = newAccount.Id;
+            contactsToInsert.add(newContact);
+        }
+        insert contactsToInsert;
+    }
 }
