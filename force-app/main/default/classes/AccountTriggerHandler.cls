@@ -11,7 +11,7 @@ public with sharing class AccountTriggerHandler {
         }      
     }
 
-    public static void copyShippingAddressToBillingAddress(List<Account> accounts) {    //update to check if null
+    public static void copyShippingAddressToBillingAddress(List<Account> accounts) {    
         for(Account acc : accounts) {     
                 acc.BillingStreet = acc.ShippingStreet;
                 acc.BillingCity = acc.ShippingCity;
@@ -37,6 +37,11 @@ public with sharing class AccountTriggerHandler {
             newContact.AccountId = newAccount.Id;
             contactsToInsert.add(newContact);
         }
-        insert contactsToInsert;
+
+        Database.DMLOptions dmlOptions = new DataBase.DMLOptions();
+        dmlOptions.DuplicateRuleHeader.AllowSave = true;
+        dmlOptions.DuplicateRuleHeader.RunAsCurrentUser = false;
+
+        Database.insert(contactsToInsert, dmlOptions);
     }
 }
