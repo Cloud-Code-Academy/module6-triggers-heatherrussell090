@@ -2,7 +2,7 @@ public with sharing class OpportunityTriggerHandler {
     public OpportunityTriggerHandler() {
 
     }
-    //Method for validating opp amount 
+    
     public static void validateOppAmount(List<Opportunity> opportunities) {
         for(Opportunity opp : opportunities) {
             if(opp.Amount <= 5000) {
@@ -11,7 +11,7 @@ public with sharing class OpportunityTriggerHandler {
         }
     }
 
-    //Method for prevention of deletion of Close Won opp
+    
     public static void deleteCloseWonOpp(List<Opportunity> opportunities) {
         Set<Id> accountIds = new Set<Id>();
         for(Opportunity opp : opportunities) {
@@ -27,19 +27,17 @@ public with sharing class OpportunityTriggerHandler {
         }
     }
 
-    //Method to set the primary contact
+    
     public static void setPrimaryContact(List<Opportunity> opportunities) {
         Set<Id> accountIds = new Set<Id>();
-
         for(Opportunity opp : opportunities) {
             accountIds.add(opp.AccountId);
         }
 
         Map<Id, Contact> ceoContactsByAccount = new Map<Id, Contact>(); 
-            for(Contact con : [SELECT Id, AccountId FROM Contact WHERE AccountId In :accountIds AND Title = 'CEO']) {
-                ceoContactsByAccount.put(con.AccountId, con);
-            }
-        
+        for(Contact con : [SELECT Id, AccountId FROM Contact WHERE AccountId In :accountIds AND Title = 'CEO']) {
+            ceoContactsByAccount.put(con.AccountId, con);
+        }        
 
         for(Opportunity opp : opportunities) {
             if(ceoContactsByAccount.containsKey(opp.AccountId)) {

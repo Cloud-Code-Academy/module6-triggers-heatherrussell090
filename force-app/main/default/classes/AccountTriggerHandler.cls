@@ -12,7 +12,13 @@ public with sharing class AccountTriggerHandler {
     }
 
     public static void copyShippingAddressToBillingAddress(List<Account> accounts) {    
-        for(Account acc : accounts) {     
+        for(Account acc : accounts) {    
+            if(String.isNotBlank(acc.ShippingStreet) ||
+               String.isNotBlank(acc.ShippingCity) ||
+               String.isNotBlank(acc.ShippingState) ||
+               String.isNotBlank(acc.ShippingPostalCode) ||
+               String.isNotBlank(acc.ShippingCountry) 
+            ) 
                 acc.BillingStreet = acc.ShippingStreet;
                 acc.BillingCity = acc.ShippingCity;
                 acc.BillingState = acc.ShippingState;
@@ -23,7 +29,10 @@ public with sharing class AccountTriggerHandler {
 
     public static void setAccountRating(List<Account> accounts) {
         for(Account newAccount : accounts) {
-            if(String.isNotBlank(newAccount.Phone) && String.isNotBlank(newAccount.Website) && String.isNotBlank(newAccount.Fax))
+            if(String.isNotBlank(newAccount.Phone) &&
+               String.isNotBlank(newAccount.Website) &&
+               String.isNotBlank(newAccount.Fax))
+               
                 newAccount.Rating = 'Hot';
             } 
     }

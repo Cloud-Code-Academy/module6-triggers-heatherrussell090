@@ -8,7 +8,6 @@ trigger AccountTrigger on Account (before insert, before update, after insert, a
 
     if(Trigger.isAfter && Trigger.IsInsert) {
         AccountTriggerHandler.createContactRelatedToAccount(Trigger.New);
-    }
-
-    
+    }  
+      
 }
